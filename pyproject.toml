@@ -1,0 +1,22 @@
+[project]
+name = "home-assistant-remote-commands"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Michał Wadas",email = "michalwadas@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "paho-mqtt (>=2.1.0,<3.0.0)",
+    "ha-mqtt-discoverable (>=0.18.0,<0.19.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+
