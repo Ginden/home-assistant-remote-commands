@@ -1,0 +1,5 @@
+{
+  "shell_command": "osascript -e 'display notification \\\"HA command executed\\\" with title \\\"HA Remote Commands\\\"' 2>/dev/null || notify-send \\\"HA Remote Commands\\\" \\\"HA command executed\\\"",
+  "name": "Notify User",
+  "description": "Display a desktop notification on macOS or Linux"
+}

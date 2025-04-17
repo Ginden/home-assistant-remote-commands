@@ -5,6 +5,7 @@ from typing import Optional
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class AppConfig(BaseSettings):
     mqtt_host: str = Field('localhost', alias="MQTT_HOST")
     mqtt_port: int = Field(1883, alias="MQTT_PORT")

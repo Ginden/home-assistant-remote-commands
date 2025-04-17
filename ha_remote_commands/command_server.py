@@ -1,3 +1,5 @@
+from typing import Any
+
 from ha_remote_commands.app_config import AppConfig
 from ha_mqtt_discoverable import Settings, DeviceInfo
 from ha_mqtt_discoverable.sensors import Button, ButtonInfo
@@ -24,20 +26,22 @@ def get_mqtt_client(config: AppConfig) -> HackyMqttClient:
     return client
 
 
-def construct_device_info(config: AppConfig):
+def construct_device_info(config: AppConfig) -> DeviceInfo:
     """
     Construct the device info for the MQTT discovery.
     """
     return DeviceInfo(
-        identifiers={f"{config.user_id}-{config.host_id}"},
+        identifiers=[f"{config.user_id}-{config.host_id}"],
         name=f"Remote Control {config.user_id} on {config.host_id}",
         manufacturer="HA Remote Commands",
         model="Command Server",
         sw_version="1.0.0",
     )
 
-def button_callback(client: Client, cmd: CommandDescription, message: MQTTMessage):
+
+def button_callback(client: Client, cmd: CommandDescription, message: MQTTMessage) -> None:
     cmd.execute()
+
 
 def start_command_server(command_dir: str, config: AppConfig) -> None:
     device_info = construct_device_info(config)
@@ -46,7 +50,6 @@ def start_command_server(command_dir: str, config: AppConfig) -> None:
 
     router = MqttCallbackRouter()
     client.on_message = router
-    client.on_connect = router.on_connect
     mqtt_settings = Settings.MQTT(client=client)
     buttons: list[Button] = []
 
@@ -58,16 +61,14 @@ def start_command_server(command_dir: str, config: AppConfig) -> None:
         router.add_callback(button._command_topic, button_callback, command)
         buttons.append(button)
 
-    def on_connect(*args, **kwargs):
+    def on_connect(*args: Any, **kwargs: Any) -> None:
         print(f"Connected to MQTT broker")
         router.on_connect(*args, **kwargs)
-        for button in buttons:
-            print(f"Writing config for {button.state_topic}")
-            button.write_config()
+        for button_to_publish in buttons:
+            print(f"Writing config for {button_to_publish.state_topic}")
+            button_to_publish.write_config()  # type: ignore[no-untyped-call]
 
     client.on_connect = on_connect
     client.on_message = router
     client.connect(config.mqtt_host, config.mqtt_port)
     client.loop_forever()
-
-

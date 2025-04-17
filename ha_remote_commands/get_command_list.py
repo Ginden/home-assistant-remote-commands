@@ -15,7 +15,7 @@ class CommandDescription(BaseModel):
 
     is_executing: bool = False
 
-    def execute(self):
+    def execute(self) -> None:
         """
         Execute the shell command.
         """
