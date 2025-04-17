@@ -10,8 +10,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Operating System :: OS Independent"
+     "Operating System :: OS Independent"
 ]
+packages = [{ include = "ha_remote_commands" }]
 
 [tool.poetry.urls]
 Homepage = "https://github.com/michalwadas/home-assistant-remote-commands"
