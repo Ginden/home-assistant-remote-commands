@@ -8,8 +8,6 @@ from paho.mqtt.client import Client, MQTTMessage
 from ha_remote_commands.get_command_list import get_command_list, CommandDescription
 from ha_remote_commands.mqtt_callback_router import MqttCallbackRouter
 from ha_remote_commands.hacky_mqtt_client import HackyMqttClient
-import logging
-
 
 def get_mqtt_client(config: AppConfig) -> HackyMqttClient:
     """
