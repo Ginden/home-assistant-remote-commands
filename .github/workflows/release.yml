@@ -1,41 +1,36 @@
 # This is a basic workflow that is manually triggered
 
-name: Build new release
+name: Build
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 on:
   workflow_dispatch:
-    inputs:
-      bump-type:
-        description: 'Bump type'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - major
-          - minor
-          - patch
 
 
 jobs:
-  bump-and-release:
+  build-and-release:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+        poetry-version: ["main"]
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-
-      - name: Bump version
-        id: bump
-        uses: callowayproject/bump-my-version@master
-        env:
-          BUMPVERSION_TAG: "true"
+      - uses: actions/setup-python@v5
         with:
-          args: ${{ inputs.bump-type }}
-          github-token: ${{ secrets.GH_TOKEN }}
-
-      - name: Check
-        if: steps.bump.outputs.bumped == 'true'
+          python-version: ${{ matrix.python-version }}
+      - name: Install poetry
         run: |
-          echo "Version was bumped from ${{ steps.bump.outputs.previous-version }} to ${{ steps.bump.outputs.current-version }}!"
+          python -m pip install poetry
+      - name: Cache the virtualenv
+        uses: actions/cache@v4
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/poetry.lock') }}
+      - name: Install dependencies
+        run: |
+          python -m poetry install
+
