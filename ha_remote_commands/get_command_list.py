@@ -8,8 +8,6 @@ class CommandDescription(BaseModel):
     shell_command: str
     # Name to display in the UI
     name: str
-    # Text to display in the UI in details
-    description: str
 
     unique_id: str
 
@@ -43,7 +41,6 @@ def get_command_list(command_dir: str) -> list[CommandDescription]:
             command = CommandDescription(
                 shell_command=filepath,
                 name=filename,
-                description=f"Executable file: {filename}",
                 unique_id=filepath,
             )
             commands.append(command)

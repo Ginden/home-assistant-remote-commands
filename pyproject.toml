@@ -6,7 +6,7 @@ authors = [
     {name = "Michał Wadas",email = "michalwadas@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12,<4.0"
+requires-python = ">=3.12,<3.14"
 dependencies = [
     "paho-mqtt (>=2.1.0,<3.0.0)",
     "ha-mqtt-discoverable (>=0.18.0,<0.19.0)",
@@ -21,6 +21,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.15.0"
+pyinstaller = "^6.13.0"
 
 [tool.mypy]
 strict = true

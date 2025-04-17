@@ -1,3 +1,6 @@
 __pycache__
 bin
 .env
+dist
+build
+__main__.spec
